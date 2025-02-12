@@ -5,6 +5,8 @@
 #   "fastapi",
 #   "uvicorn",
 #   "python-dateutil",
+#   "requests",
+#   "numpy"
 # ]
 # ///
 
