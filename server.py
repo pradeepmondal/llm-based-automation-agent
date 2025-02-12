@@ -16,6 +16,7 @@ import json
 from typing import Dict, Any
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
 from tools_description import tools
 from tools import *
 from business_tools import *
@@ -31,12 +32,12 @@ app.add_middleware(
 )
 
 @app.post("/run")
-def ask_gpt(task = Query(None, title="Task String", description="The task string for the model"), tools=tools):
+async def ask_gpt(task = Query(None, title="Task String", description="The task string for the model"), tools=tools):
     try:
         response = httpx.post(
             "http://aiproxy.sanand.workers.dev/openai/v1/chat/completions",
             headers={
-                "Authorization": f"Bearer {os.getenv('AIPROXY_API_KEY')}",
+                "Authorization": f"Bearer {os.getenv('AIPROXY_TOKEN')}",
                 "Content-Type": "application/json",
             },
             json={
@@ -48,7 +49,7 @@ def ask_gpt(task = Query(None, title="Task String", description="The task string
                     },
                     {
                         "role": "user", 
-                        "content": task
+                        "content": f"""{task}"""
                     }
                     ],
                 "tools": tools,
@@ -62,18 +63,19 @@ def ask_gpt(task = Query(None, title="Task String", description="The task string
    
     fn = eval(res["name"])
     arguments = json.loads(res["arguments"])
-
+    with open('logs.txt', 'a+') as log_details:
+        log_details.write(str(res))
     return fn(**arguments)
 
-    
 
+@app.get("/read", response_class=PlainTextResponse)
+async def get_file(path = Query(None, title="Path String", description="Path string of the file")):
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="File not found")
+    with open(path, 'r') as file:
+        content = file.read()
+        return content
 
-
-
-
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
 
 
 if __name__ == "__main__":

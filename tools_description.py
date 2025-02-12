@@ -64,7 +64,7 @@ tools = [
                     },
                     "day_of_the_week": {
                         "type": "string",
-                        "description": "Day of the week as per English calender"
+                        "description": "Day of the week as per English calender eg format: Wednesday"
                     },
 
                     "output_file_path": {
@@ -178,7 +178,7 @@ tools = [
         "type": "function",
         "function": {
             "name": "extract_email_info",
-            "description": "Extract the required information from a email message (path specified) and write it to the specified output file (path specified)",
+            "description": "Extract the required information, eg: sender's email address, etc., from a email message (path specified) and write it to the specified output file (path specified)",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -188,7 +188,7 @@ tools = [
                     },
                     "req_info": {
                         "type": "string",
-                        "description": "The required information eg: email address, name, etc."
+                        "description": "The required information eg: sender's email address or receiver's email address or sender's name, etc."
                     },
 
                     "output_file_path": {
@@ -198,6 +198,65 @@ tools = [
 
                 },
                 "required": ["email_file_path", "req_info", "output_file_path"],
+                "additionalProperties": False
+            },
+            "strict": True
+        }
+    },
+
+
+
+    {
+        "type": "function",
+        "function": {
+            "name": "extract_cc_number",
+            "description": "Extract the required information from a credit card image (path specified) and write it to the specified output file (path specified)",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "img_file_path": {
+                        "type": "string",
+                        "description": "Path of the credit card image file"
+                    },
+                    "req_info": {
+                        "type": "string",
+                        "description": "The required information"
+                    },
+
+                    "output_file_path": {
+                        "type": "string",
+                        "description": "Path of the required output file"
+                    },
+
+                },
+                "required": ["img_file_path", "req_info", "output_file_path"],
+                "additionalProperties": False
+            },
+            "strict": True
+        }
+    },
+
+
+        {
+        "type": "function",
+        "function": {
+            "name": "get_most_similar_comments",
+            "description": "Get the most similar pair of comments in a given file (path specified) and write them to a output file (path specified)",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "comments_file_path": {
+                        "type": "string",
+                        "description": "Path of the file conatining the comments"
+                    },
+
+                    "output_file_path": {
+                        "type": "string",
+                        "description": "Path of the required output file"
+                    },
+
+                },
+                "required": ["comments_file_path", "output_file_path"],
                 "additionalProperties": False
             },
             "strict": True
@@ -260,5 +319,154 @@ tools = [
             "strict": True
         }
             },
+
+
+    {
+        "type": "function",
+        "function": {
+            "name": "run_sql_query",
+            "description": "This function handles prompts that involve running a SQL query on a SQLite or DuckDB database. This takes the entire user prompt as its only argument - prompt.",
+            "parameters": {
+            "type": "object",
+            "properties": {
+                "prompt": {
+                "type": "string",
+                "description": "The entire user prompt as provided without any modifications"
+                }
+            },
+            "required": ["prompt"],
+            "additionalProperties": False
+            },
+            "strict": True
+        }
+            },
+
+    {
+        "type": "function",
+        "function": {
+            "name": "scrape_website",
+            "description": "This function handles prompts that involve scraping a website. This takes the entire user prompt as its only argument - prompt.",
+            "parameters": {
+            "type": "object",
+            "properties": {
+                "prompt": {
+                "type": "string",
+                "description": "The entire user prompt that asks for scraping a website"
+                }
+            },
+            "required": ["prompt"],
+            "additionalProperties": False
+            },
+            "strict": True
+        }
+            },
+
+
+        {
+        "type": "function",
+        "function": {
+            "name": "compress_or_resize",
+            "description": "This function handles prompts that involve compresing or resizing an image. This takes the entire user prompt as its only argument - prompt.",
+            "parameters": {
+            "type": "object",
+            "properties": {
+                "prompt": {
+                "type": "string",
+                "description": "The entire user prompt that asks for compresing or resizing an image"
+                }
+            },
+            "required": ["prompt"],
+            "additionalProperties": False
+            },
+            "strict": True
+        }
+            },
+
+        
+        {
+        "type": "function",
+        "function": {
+            "name": "transcribe_audio",
+            "description": "This function handles prompts that involve transcribing audio from an mp3 file. This takes the entire user prompt as its only argument - prompt.",
+            "parameters": {
+            "type": "object",
+            "properties": {
+                "prompt": {
+                "type": "string",
+                "description": "The entire user prompt that asks for transcribing audio from an mp3 file"
+                }
+            },
+            "required": ["prompt"],
+            "additionalProperties": False
+            },
+            "strict": True
+        }
+            },
+
+
+        
+        {
+        "type": "function",
+        "function": {
+            "name": "markdown_to_html",
+            "description": "This function handles prompts that involve converting markdown to html. This takes the entire user prompt as its only argument - prompt.",
+            "parameters": {
+            "type": "object",
+            "properties": {
+                "prompt": {
+                "type": "string",
+                "description": "The entire user prompt that asks for converting markdown to html"
+                }
+            },
+            "required": ["prompt"],
+            "additionalProperties": False
+            },
+            "strict": True
+        }
+            },
+
+        
+        {
+        "type": "function",
+        "function": {
+            "name": "csv_to_json",
+            "description": "This function handles prompts that involve filtering a CSV file and returns JSON data. This takes the entire user prompt as its only argument - prompt",
+            "parameters": {
+            "type": "object",
+            "properties": {
+                "prompt": {
+                "type": "string",
+                "description": "The entire user prompt that asks for filtering a CSV file and returns JSON data"
+                }
+            },
+            "required": ["prompt"],
+            "additionalProperties": False
+            },
+            "strict": True
+        }
+            },
+
+        
+                {
+        "type": "function",
+        "function": {
+            "name": "other_tasks",
+            "description": "This function handles prompts that involve tasks not covered by the other specified functions. This takes the entire user prompt as its only argument - prompt.",
+            "parameters": {
+            "type": "object",
+            "properties": {
+                "prompt": {
+                "type": "string",
+                "description": "The entire user prompt that involves tasks not specified in the other functions."
+                }
+            },
+            "required": ["prompt"],
+            "additionalProperties": False
+            },
+            "strict": True
+        }
+            },
+
+
     
 ]
