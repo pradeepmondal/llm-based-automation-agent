@@ -184,50 +184,51 @@ def extract_cc_number(img_file_path, req_info, output_file_path):
     # import base64
 
     try:
-    #     img_data = None
-    #     with open(img_file_path, 'rb') as cc_image:
-    #         img_data = cc_image.read()
+        img_data = None
+        with open(img_file_path, 'rb') as cc_image:
+            img_data = cc_image.read()
         
-    #     base64_img = base64.b64encode(img_data).decode('utf-8')
+        base64_img = base64.b64encode(img_data).decode('utf-8')
 
-    #     task = f"Extract only the {req_info} from the given image: {base64_img}"
-    #     response = httpx.post(
-    #         "http://aiproxy.sanand.workers.dev/openai/v1/chat/completions",
-    #         headers={
-    #             "Authorization": f"Bearer {os.getenv('AIPROXY_TOKEN')}",
-    #             "Content-Type": "application/json",
-    #         },
-    #         json={
-    #             "model": "gpt-4o-mini",
-    #             "messages": [
+        task = f"""Please analyze the attached image and extract any visible card information. These details are typically found on different types of cards like employee cards, metro cards or credit cards:
+                    Once extracted, provide only the {req_info} in plain text output, without space: {base64_img}"""
+        response = httpx.post(
+            "http://aiproxy.sanand.workers.dev/openai/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {os.getenv('AIPROXY_TOKEN')}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": "gpt-4o-mini",
+                "messages": [
 
-    #                 {
-    #                     "role": "user", 
-    #                     "content": [
-    #                     {
-    #                         "type": "text",
-    #                         "text": task
-    #                     },
-    #                     {
-    #                         "type": "image_url",
-    #                         "image_url": {
-    #                                 "detail": "low",
-    #                                 "url": f"data:image/png;base64,{base64_img}"
-    #                                     }
-    #                     }
+                    {
+                        "role": "user", 
+                        "content": [
+                        {
+                            "type": "text",
+                            "text": task
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                    "detail": "low",
+                                    "url": f"data:image/png;base64,{base64_img}"
+                                        }
+                        }
 
 
-    #                       ]
-    #                 }
-    #                 ],
-    #         },
-    #     )
+                          ]
+                    }
+                    ],
+            },
+        )
 
-    #     returned_info = response.json()["choices"][0]["message"]["content"]
+        returned_info = response.json()["choices"][0]["message"]["content"]
 
-    ## LLM seemed to consider it as illegal task, hard coding for the evaluation purpose
+    # LLM seemed to consider it as illegal task, hard coding for the evaluation purpose
 
-        returned_info = "675986225968"
+        # returned_info = "675986225968"
         with open(output_file_path, 'w') as out_file:
             out_file.write(str(returned_info))
 
