@@ -181,7 +181,7 @@ def extract_email_info(email_file_path, req_info, output_file_path):
 
 # Function for task A8
 def extract_cc_number(img_file_path, req_info, output_file_path):
-    # import base64
+    import base64
 
     try:
         img_data = None
